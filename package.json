@@ -2,8 +2,10 @@
   "name": "ddns-route53-service",
   "version": "1.0.0",
   "description": "",
-  "main": "app.js",
+  "main": "app.ts",
   "scripts": {
+    "build": "rimraf ./build && tsc",
+    "start": "npm run build && node dist/app.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -15,5 +17,12 @@
   "bugs": {
     "url": "https://github.com/jamesgawn/ddns-route53-service/issues"
   },
-  "homepage": "https://github.com/jamesgawn/ddns-route53-service#readme"
+  "homepage": "https://github.com/jamesgawn/ddns-route53-service#readme",
+  "devDependencies": {
+    "@types/node": "^13.13.0",
+    "prettier": "^2.0.4",
+    "rimraf": "^3.0.2",
+    "tslint": "^6.1.1",
+    "typescript": "^3.8.3"
+  }
 }
