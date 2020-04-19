@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rimraf ./dist && tsc",
     "start": "npm run build && node dist/app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
@@ -19,9 +19,16 @@
   },
   "homepage": "https://github.com/jamesgawn/ddns-route53-service#readme",
   "devDependencies": {
+    "@babel/core": "^7.9.0",
+    "@babel/preset-env": "^7.9.5",
+    "@babel/preset-typescript": "^7.9.0",
+    "@types/jest": "^25.2.1",
     "@types/node": "^13.13.0",
+    "babel-jest": "^25.3.0",
+    "jest": "^25.3.0",
     "prettier": "^2.0.4",
     "rimraf": "^3.0.2",
+    "ts-jest": "^25.4.0",
     "tslint": "^6.1.1",
     "typescript": "^3.8.3"
   }
