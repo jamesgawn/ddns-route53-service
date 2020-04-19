@@ -1,0 +1,19 @@
+{
+  "name": "ddns-route53-service",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jamesgawn/ddns-route53-service.git"
+  },
+  "author": "James Gawn",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jamesgawn/ddns-route53-service/issues"
+  },
+  "homepage": "https://github.com/jamesgawn/ddns-route53-service#readme"
+}
