@@ -8,13 +8,15 @@ on:
 
 jobs:
   unit-test:
+    name: Unit Test Check (Node ${{ matrix.node-version }})
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [10.x, 12.x]
     steps:
-    - uses: actions/checkout@v2
-    - name: Unit Test Node Version ${{ matrix.node-version }}
+    - name: Checkout
+      uses: actions/checkout@v2
+    - name: Set-up Node ${{ matrix.node-version }}
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
@@ -27,10 +29,12 @@ jobs:
       env:
         CI: true
   lint:
+    name: Lint Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Lint Check
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
@@ -43,10 +47,12 @@ jobs:
         env:
           CI: true
   coverage:
+    name: Coverage Check
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - name: Lint Check
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Node
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
@@ -59,11 +65,11 @@ jobs:
         env:
           CI: true
   docker-publish:
+    name: Build & Publish Docker Image
     runs-on: ubuntu-latest
     needs: [coverage, lint, unit-test]
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     steps:
-      - name: Build & Publish Docker Image
         id: dockerpublish
       - name: Checkout
         uses: actions/checkout@v2
