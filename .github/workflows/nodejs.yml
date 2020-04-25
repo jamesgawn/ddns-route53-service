@@ -94,7 +94,7 @@ jobs:
           path: ./VERSION
       - name: Setting version number
         env:
-          versionNumber: "${{steps.version.outputs.content}}.$GITHUB_RUN_NUMBER"
+          versionNumber: "${{steps.version.outputs.content}}.${{GITHUB_RUN_NUMBER}}"
         run: echo $versionNumber
       - name: Updating version number to $versionNumber
         uses: DamianReeves/write-file-action@v1.0
@@ -109,4 +109,4 @@ jobs:
           name: jamesgawn/ddns-route53-service
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          tags: "latest,$versionNumber"
+          tags: "latest,${{versionNumber}}"
