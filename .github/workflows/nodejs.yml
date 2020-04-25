@@ -24,10 +24,10 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
-        path: ./node_modules
-        key: node_modules-${{ hashFiles('./package-lock.json') }}
+        path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+        key: ${{ runner.os }}-build-npm-${{ hashFiles('**/package-lock.json') }}
         restore-keys: |
-          node_modules-${{ hashFiles('./package-lock.json') }}
+          ${{ runner.os }}-build-npm-
 
     - run: npm install
     - run: npm test
@@ -43,10 +43,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
-          path: ./node_modules
-          key: node_modules-${{ hashFiles('./package-lock.json') }}
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: ${{ runner.os }}-build-npm-${{ hashFiles('**/package-lock.json') }}
           restore-keys: |
-            node_modules-${{ hashFiles('./package-lock.json') }}
+            ${{ runner.os }}-build-npm-
       - run: npm install
       - run: npm run lint
         env:
