@@ -147,8 +147,8 @@ resource "aws_ssm_document" "deploy-update" {
     inputs:
       runCommand:
       - export AWS_DEFAULT_REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | grep region | cut -d\" -f4)
-      - sudo docker stop ${var.service-docker-name}
-      - sudo docker rm ${var.service-docker-name}
+      - sudo docker stop ${var.service-name}
+      - sudo docker rm ${var.service-name}
       - sudo docker pull ${var.service-docker-image}
       - sudo docker run -p 80:3000 --log-driver=awslogs --log-opt=awslogs-group=${var.service-name} --log-opt=awslogs-create-group=true --name ${var.service-name} --restart always -detach ${var.service-docker-image}
 
