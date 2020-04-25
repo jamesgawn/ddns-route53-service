@@ -7,7 +7,7 @@ on:
     branches: [ master ]
 
 env:
-  buildNumber: ${GITHUB_RUN_NUMBER}
+  buildNumber: ${{GITHUB_RUN_NUMBER}}
 
 jobs:
 #  unit-test:
