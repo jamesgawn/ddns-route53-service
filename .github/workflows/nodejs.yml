@@ -104,7 +104,11 @@ jobs:
           contents: $versionNumber
           write-mode: overwrite
       - name: Checking Version Number
-        run: echo $versionNumber
+        uses: juliangruber/read-file-action@v1
+        id: version2
+        with:
+          path: ./VERSION
+      - run: echo ${{steps.version2.outputs.content}}
 #      - name: Publish to Registry
 #        uses: elgohr/Publish-Docker-Github-Action@2.14
 #        with:
