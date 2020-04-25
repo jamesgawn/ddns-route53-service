@@ -101,7 +101,8 @@ jobs:
         uses: DamianReeves/write-file-action@v1.0
         with:
           path: ./VERSION
-          contents: $versionNumber
+          contents: |
+            echo $versionNumber
           write-mode: overwrite
       - name: Checking Version Number
         uses: juliangruber/read-file-action@v1
