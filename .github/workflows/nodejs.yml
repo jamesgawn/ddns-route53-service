@@ -109,4 +109,4 @@ jobs:
           name: jamesgawn/ddns-route53-service
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          tags: "latest,$versionNumber"
+          tags: "latest,${{env.versionNumber}}"
