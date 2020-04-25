@@ -6,86 +6,83 @@ on:
   pull_request:
     branches: [ master ]
 
-env:
-  buildNumber: $GITHUB_RUN_NUMBER
-
 jobs:
-  unit-test:
-    name: Unit Test Check (Node ${{ matrix.node-version }})
-    runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        node-version: [10.x, 12.x]
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Set-up node ${{ matrix.node-version }}
-        uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
-      - name: Cache Node Modules
-        uses: actions/cache@v1
-        with:
-          path: ./node_modules # npm cache files are stored in `~/.npm` on Linux/macOS
-          key: ${{ runner.os }}-build-npm-${{ hashFiles('./package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-npm-
-      - name: NPM Install
-        run: npm install
-      - name: Run Unit Tests
-        run: npm test
-        env:
-          CI: true
-  lint:
-    name: Lint Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
-      - name: Cache Node Modules
-        uses: actions/cache@v1
-        with:
-          path: ./node_modules # npm cache files are stored in `~/.npm` on Linux/macOS
-          key: ${{ runner.os }}-build-npm-${{ hashFiles('./package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-npm-
-      - name: NPM Install
-        run: npm install
-      - name: Run Lint Test
-        run: npm run lint
-        env:
-          CI: true
-  coverage:
-    name: Coverage Check
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Setup Node
-        uses: actions/setup-node@v1
-        with:
-          node-version: 12.x
-      - name: Cache Node Modules
-        uses: actions/cache@v1
-        with:
-          path: ./node_modules # npm cache files are stored in `~/.npm` on Linux/macOS
-          key: ${{ runner.os }}-build-npm-${{ hashFiles('./package-lock.json') }}
-          restore-keys: |
-            ${{ runner.os }}-build-npm-
-      - name: NPM Install
-        run: npm install
-      - name: Run Coverage Test
-        run: npm run coverage
-        env:
-          CI: true
+#  unit-test:
+#    name: Unit Test Check (Node ${{ matrix.node-version }})
+#    runs-on: ubuntu-latest
+#    strategy:
+#      matrix:
+#        node-version: [10.x, 12.x]
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#      - name: Set-up node ${{ matrix.node-version }}
+#        uses: actions/setup-node@v1
+#        with:
+#          node-version: ${{ matrix.node-version }}
+#      - name: Cache Node Modules
+#        uses: actions/cache@v1
+#        with:
+#          path: ./node_modules # npm cache files are stored in `~/.npm` on Linux/macOS
+#          key: ${{ runner.os }}-build-npm-${{ hashFiles('./package-lock.json') }}
+#          restore-keys: |
+#            ${{ runner.os }}-build-npm-
+#      - name: NPM Install
+#        run: npm install
+#      - name: Run Unit Tests
+#        run: npm test
+#        env:
+#          CI: true
+#  lint:
+#    name: Lint Check
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#      - name: Setup node
+#        uses: actions/setup-node@v1
+#        with:
+#          node-version: 12.x
+#      - name: Cache Node Modules
+#        uses: actions/cache@v1
+#        with:
+#          path: ./node_modules # npm cache files are stored in `~/.npm` on Linux/macOS
+#          key: ${{ runner.os }}-build-npm-${{ hashFiles('./package-lock.json') }}
+#          restore-keys: |
+#            ${{ runner.os }}-build-npm-
+#      - name: NPM Install
+#        run: npm install
+#      - name: Run Lint Test
+#        run: npm run lint
+#        env:
+#          CI: true
+#  coverage:
+#    name: Coverage Check
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout
+#        uses: actions/checkout@v2
+#      - name: Setup Node
+#        uses: actions/setup-node@v1
+#        with:
+#          node-version: 12.x
+#      - name: Cache Node Modules
+#        uses: actions/cache@v1
+#        with:
+#          path: ./node_modules # npm cache files are stored in `~/.npm` on Linux/macOS
+#          key: ${{ runner.os }}-build-npm-${{ hashFiles('./package-lock.json') }}
+#          restore-keys: |
+#            ${{ runner.os }}-build-npm-
+#      - name: NPM Install
+#        run: npm install
+#      - name: Run Coverage Test
+#        run: npm run coverage
+#        env:
+#          CI: true
   docker-publish:
     name: Build & Publish Docker
     runs-on: ubuntu-latest
-    needs: [coverage, lint, unit-test]
+#    needs: [coverage, lint, unit-test]
 #    if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     steps:
       - name: Checkout
@@ -98,7 +95,7 @@ jobs:
       - name: Setting version number
         id: versionNumber
         env:
-          versionNumber: "${{ steps.version.outputs.content }}.${{ env.buildNumber }}"
+          versionNumber: "${{ steps.version.outputs.content }}.${{ GITHUB_RUN_NUMBER }}"
         run: echo $versionNumber
       - name: Updating version number to $versionNumber
         uses: DamianReeves/write-file-action@v1.0
