@@ -6,9 +6,6 @@ on:
   pull_request:
     branches: [ master ]
 
-env:
-  githubRunNumber: $GITHUB_RUN_NUMBER
-
 jobs:
   unit-test:
     name: Unit Test Check (Node ${{ matrix.node-version }})
@@ -98,7 +95,7 @@ jobs:
       - name: Setting version number
         id: versionNumber
         env:
-          versionNumber: "${{steps.version.outputs.content}}.${{githubRunNumber}}"
+          versionNumber: "${{ steps.version.outputs.content }}.${{ env.githubRunNumber }}"
         run: echo $versionNumber
       - name: Updating version number to $versionNumber
         uses: DamianReeves/write-file-action@v1.0
