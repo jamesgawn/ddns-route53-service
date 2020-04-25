@@ -88,7 +88,9 @@ jobs:
         uses: actions/checkout@v2
         with:
           token: ${{ secrets.GTOKEN }}
+          fetch-depth: '0'
       - name: Bump version and push tag
-        uses: mathieudutour/github-tag-action@v4
+        uses: nothrNick/github-tag-action@1.17.2
         with:
-          github_token: ${{ secrets.GTOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GTOKEN }}
+          WITH_V: true
