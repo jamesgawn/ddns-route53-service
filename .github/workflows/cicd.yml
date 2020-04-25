@@ -64,4 +64,8 @@ jobs:
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     steps:
       - name: Build & Publish Docker Image
-        echo: "Test"
+        id: version
+        uses: juliangruber/read-file-action@v1
+          with:
+            path: ./VERSION
+        run: echo ${steps.version.outputs.content}
