@@ -6,7 +6,7 @@
   "scripts": {
     "build": "rimraf ./dist && tsc",
     "start": "npm run build && node dist/app.js",
-    "watch": "npm run build && nodemon dist/app.js",
+    "watch": "nodemon dist/app.js",
     "test": "jest",
     "lint": "tslint --project tsconfig.json"
   },
@@ -27,6 +27,7 @@
     "@types/bunyan": "^1.8.6",
     "@types/jest": "^25.2.1",
     "@types/koa": "^2.11.3",
+    "@types/koa-bodyparser": "^4.3.0",
     "@types/koa-json": "^2.0.18",
     "@types/koa-router": "^7.4.0",
     "@types/node": "^13.13.0",
@@ -41,6 +42,7 @@
   "dependencies": {
     "bunyan": "^1.8.12",
     "koa": "^2.11.0",
+    "koa-bodyparser": "^4.3.0",
     "koa-json": "^2.0.2",
     "koa-router": "^8.0.8"
   }
