@@ -30,5 +30,5 @@ koa.use( (ctx, next) => {
 });
 
 koa.listen(port, () => {
-    logger.info(`server listening to http://localhost:${port}`);
+    logger.info(`ddns route 53 server (v${version}) listening to http://localhost:${port}`);
 });
