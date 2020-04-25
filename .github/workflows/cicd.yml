@@ -18,8 +18,8 @@ jobs:
       uses: actions/checkout@v2
     - name: Set-up node ${{ matrix.node-version }}
       uses: actions/setup-node@v1
-        with:
-          node-version: ${{ matrix.node-version }}
+      with:
+        node-version: ${{ matrix.node-version }}
     - name: Cache Node Modules
       uses: actions/cache@v1
       with:
