@@ -96,12 +96,12 @@ jobs:
         id: versionNumber
         env:
           versionNumber: "${{ steps.version.outputs.content }}.${{github.run_number}}"
-        run: echo $versionNumber
+        run: echo "::set-env name=versionNumber::${{env.versionNumber}}"
       - name: Updating version number to $versionNumber
         uses: DamianReeves/write-file-action@v1.0
         with:
           path: ./VERSION
-          contents: $versionNumber
+          contents: ${{ env.versionNumber }}
           write-mode: overwrite
       - name: Publish to Registry
         uses: elgohr/Publish-Docker-Github-Action@2.14
@@ -109,4 +109,4 @@ jobs:
           name: jamesgawn/ddns-route53-service
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-          tags: "latest,${{env.versionNumber}}"
+          tags: "latest,${{ env.versionNumber }}"
