@@ -1,7 +1,7 @@
 # This workflow will do a clean install of node dependencies, build the source code and run tests across different versions of node
 # For more information see: https://help.github.com/actions/language-and-framework-guides/using-nodejs-with-github-actions
 
-name: Node.js CI
+name: CI
 
 on:
   push:
@@ -24,6 +24,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+        path: ./node_modules
+        key: node_modules-${{ hashFiles('./package-lock.json') }}
+        restore-keys: |
+          node_modules-${{ hashFiles('./package-lock.json') }}
+
     - run: npm install
     - run: npm test
       env:
@@ -38,6 +43,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
+          path: ./node_modules
+          key: node_modules-${{ hashFiles('./package-lock.json') }}
+          restore-keys: |
+            node_modules-${{ hashFiles('./package-lock.json') }}
       - run: npm install
       - run: npm run lint
         env:
