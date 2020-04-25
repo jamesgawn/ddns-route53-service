@@ -68,4 +68,5 @@ jobs:
         uses: juliangruber/read-file-action@v1
           with:
             path: ./VERSION
+      - name: Echo VERSION
         run: echo ${steps.version.outputs.content}
