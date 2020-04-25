@@ -1,3 +1,5 @@
+import * as fs from "fs";
+
 export class AppUtils {
     static normalisePort(defaultPort: number) {
         const envPort = process.env.port;
@@ -13,5 +15,15 @@ export class AppUtils {
             return parsedEnvPort;
         }
         return defaultPort;
+    }
+    static normaliseVersion(defaultVersion: string) {
+        if (fs.existsSync('VERSION')) {
+            const fileVersion = fs.readFileSync('VERSION').toString().replace('\n', '');
+            if (fileVersion.match("^[0-9]*\.[0-9]*\.[0-9]*$"))
+            {
+                return fileVersion;
+            }
+        }
+        return defaultVersion;
     }
 }
