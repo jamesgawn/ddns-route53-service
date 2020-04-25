@@ -51,3 +51,21 @@ jobs:
       - run: npm run lint
         env:
           CI: true
+  coverage:
+
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+      - name: Lint Check
+        uses: actions/setup-node@v1
+        with:
+          node-version: 12.x
+          path: ~/.npm # npm cache files are stored in `~/.npm` on Linux/macOS
+          key: ${{ runner.os }}-build-npm-${{ hashFiles('**/package-lock.json') }}
+          restore-keys: |
+            ${{ runner.os }}-build-npm-
+      - run: npm install
+      - run: npm run coverage
+        env:
+          CI: true

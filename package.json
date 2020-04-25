@@ -8,6 +8,7 @@
     "start": "npm run build && node dist/app.js",
     "watch": "nodemon dist/app.js",
     "test": "jest",
+    "coverage": "jest --collectCoverage",
     "lint": "tslint --project tsconfig.json"
   },
   "repository": {
