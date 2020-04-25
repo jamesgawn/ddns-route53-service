@@ -7,3 +7,6 @@ Readme.md
 dist
 .github
 .*
+terraform.tf
+terraform.tfvars
+cloudinit.cfg
