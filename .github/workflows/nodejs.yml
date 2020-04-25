@@ -99,7 +99,7 @@ jobs:
           contents: |
             echo "${{steps.version.outputs.content}}.$GITHUB_RUN_NUMBER"
       - name: Publish to Registry
-        users: elgohr/Publish-Docker-Github-Action@2.14
+        uses: elgohr/Publish-Docker-Github-Action@2.14
         with:
           name: jamesgawn/ddns-route53-service
           username: ${{ secrets.DOCKER_USERNAME }}
