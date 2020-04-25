@@ -63,12 +63,10 @@ jobs:
     needs: [coverage, lint, unit-test]
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     steps:
-      - name: Checkout
-        uses: actions/checkout@v2
       - name: Build & Publish Docker Image
-        id: version
-        uses: juliangruber/read-file-action@v1
+        uses: actions/checkout@v2
+        id: dockerpublish
+      - uses: juliangruber/read-file-action@v1
           with:
             path: ./VERSION
-      - name: Echo VERSION
-        run: echo ${steps.version.outputs.content}
+      -  run: echo ${steps.dockerpublish.outputs.content}
