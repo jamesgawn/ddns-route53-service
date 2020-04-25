@@ -24,6 +24,11 @@ jobs:
       uses: actions/setup-node@v1
       with:
         node-version: ${{ matrix.node-version }}
+        path: ./node_modules
+        key: node_modules-${{ hashFiles('./package-lock.json') }}
+        restore-keys: |
+          node_modules-${{ hashFiles('./package-lock.json') }}
+
     - run: npm install
     - run: npm test
       env:
@@ -38,6 +43,10 @@ jobs:
         uses: actions/setup-node@v1
         with:
           node-version: 12.x
+          path: ./node_modules
+          key: node_modules-${{ hashFiles('./package-lock.json') }}
+          restore-keys: |
+            node_modules-${{ hashFiles('./package-lock.json') }}
       - run: npm install
       - run: npm run lint
         env:
