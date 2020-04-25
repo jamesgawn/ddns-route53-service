@@ -64,7 +64,7 @@ jobs:
     if: github.ref == 'refs/heads/master' && github.event_name == 'push'
     steps:
       - name: Build & Publish Docker Image
-        uses: actions/checkout@v2
+      - uses: actions/checkout@v2
         id: dockerpublish
       - uses: juliangruber/read-file-action@v1
           with:
