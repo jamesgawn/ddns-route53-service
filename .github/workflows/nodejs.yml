@@ -93,7 +93,7 @@ jobs:
         with:
           path: ./VERSION
       - name: Updating version number to ${{steps.version.outputs.content}}
-        uses: DamianReeves/write-file-action
+        uses: DamianReeves/write-file-action@v1.0
         with:
           path: ./VERSION
           contents: |
