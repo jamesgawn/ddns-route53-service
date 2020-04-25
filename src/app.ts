@@ -16,7 +16,7 @@ const logger = Logger.createLogger({
 const router = new KoaRouter();
 
 router.get('/', async (ctx, next) => {
-    ctx.body = { msg: "Hello World"};
+    ctx.body = { msg: "Dynamic DNS Service"};
     await next();
 });
 
