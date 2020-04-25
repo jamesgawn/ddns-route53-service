@@ -90,7 +90,7 @@ jobs:
           token: ${{ secrets.GTOKEN }}
           fetch-depth: '0'
       - name: Bump version and push tag
-        uses: nothrNick/github-tag-action@1.17.2
+        uses: nothrNick/github-tag-action@1.19.0
         with:
           GITHUB_TOKEN: ${{ secrets.GTOKEN }}
           WITH_V: true
