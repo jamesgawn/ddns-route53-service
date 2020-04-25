@@ -86,6 +86,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.GTOKEN }}
       - name: Bump version and push tag
         uses: mathieudutour/github-tag-action@v4
         with:
