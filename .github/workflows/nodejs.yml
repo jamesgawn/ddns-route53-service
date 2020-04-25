@@ -96,12 +96,12 @@ jobs:
         id: versionNumber
         env:
           versionNumber: "${{ steps.version.outputs.content }}.${{github.run_number}}"
-        run: echo $versionNumber
+        run: echo "::set-env name=versionNumber::${{versionNumber}}"
       - name: Updating version number to $versionNumber
         uses: DamianReeves/write-file-action@v1.0
         with:
           path: ./VERSION
-          contents: ${{ env.versionNumber }}
+          contents: ${{ versionNumber }}
           write-mode: overwrite
       - name: Checking Version Number
         uses: juliangruber/read-file-action@v1
