@@ -103,6 +103,8 @@ jobs:
           path: ./VERSION
           contents: "${{env.versionNumber}}"
           write-mode: overwrite
+      - name: Checking Version Number
+        run: echo $versionNumber
 #      - name: Publish to Registry
 #        uses: elgohr/Publish-Docker-Github-Action@2.14
 #        with:
