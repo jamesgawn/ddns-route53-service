@@ -101,7 +101,7 @@ jobs:
         uses: DamianReeves/write-file-action@v1.0
         with:
           path: ./VERSION
-          contents: ${{ versionNumber }}
+          contents: $versionNumber
           write-mode: overwrite
       - name: Publish to Registry
         uses: elgohr/Publish-Docker-Github-Action@2.14
