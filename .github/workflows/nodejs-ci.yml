@@ -87,7 +87,6 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
       - name: Bump version and push tag
-        uses: mathieudutour/github-tag-action@v4.1
+        uses: mathieudutour/github-tag-action@v4.0
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          dry_run: false
