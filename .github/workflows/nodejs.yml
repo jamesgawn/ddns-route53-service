@@ -101,7 +101,7 @@ jobs:
         uses: DamianReeves/write-file-action@v1.0
         with:
           path: ./VERSION
-          contents: ${{ versionNumber }}
+          contents: ${{ env.versionNumber }}
           write-mode: overwrite
       - name: Checking Version Number
         uses: juliangruber/read-file-action@v1
@@ -115,4 +115,4 @@ jobs:
 #          name: jamesgawn/ddns-route53-service
 #          username: ${{ secrets.DOCKER_USERNAME }}
 #          password: ${{ secrets.DOCKER_PASSWORD }}
-#          tags: "latest,${{env.versionNumber}}"
+#          tags: "latest,${{ env.versionNumber }}"
