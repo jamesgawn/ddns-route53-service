@@ -13,12 +13,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Get the version
         id: tag
-        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3 | cut -c 2-)
-      - name: Setting version number
-        id: versionNumber
-        env:
-          versionNumber: "${{ steps.tag.outputs.VERSION }}"
-        run: echo $versionNumber
+        run: echo ::set-env name=versionNumber::$(echo $GITHUB_REF | cut -d / -f 3 | cut -c 2-)
       - name: Updating version number to ${{ env.versionNumber }}
         uses: DamianReeves/write-file-action@v1.0
         with:
