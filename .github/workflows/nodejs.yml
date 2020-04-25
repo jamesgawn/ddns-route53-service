@@ -78,13 +78,13 @@ jobs:
         run: npm run coverage
         env:
           CI: true
-    tag:
-      name: Tag
-      runs-on: ubuntu-latest
-      steps:
-        - name: Checkout
-          uses: actions/checkout@v2
-        - name: Bump version and push tag
-          uses: mathieudutour/github-tag-action@v4.1
-          with:
-            github_token: ${{ secrets.GITHUB_TOKEN }}
+  tag:
+    name: Tag
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Bump version and push tag
+        uses: mathieudutour/github-tag-action@v4.1
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
