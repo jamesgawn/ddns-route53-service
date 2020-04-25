@@ -99,7 +99,7 @@ jobs:
         id: versionNumber
         env:
           versionNumber: "${{steps.version.outputs.content}}.$githubRunNumber"
-        run: echo ${{versionNumber}}
+        run: echo $versionNumber
       - name: Updating version number to $versionNumber
         uses: DamianReeves/write-file-action@v1.0
         with:
