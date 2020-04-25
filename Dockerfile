@@ -15,4 +15,5 @@ RUN npm install --production
 
 COPY --from=build /usr/src/app/dist dist
 
-ENTRYPOINT [ "node", "dist/app.js"]
+EXPOSE 3000
+CMD [ "node", "dist/app.js"]

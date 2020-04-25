@@ -5,3 +5,4 @@ DockerFile
 .gitignore
 Readme.md
 dist
+.github
