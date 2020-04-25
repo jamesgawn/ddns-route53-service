@@ -2,7 +2,7 @@ name: Nodejs CD
 on:
   push:
     tags:
-      - '*'
+      - 'v*'
 
 jobs:
   docker-publish:
@@ -13,11 +13,11 @@ jobs:
         uses: actions/checkout@v2
       - name: Get the version
         id: tag
-        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3)
+        run: echo ::set-output name=VERSION::$(echo $GITHUB_REF | cut -d / -f 3 | cut 1-)
       - name: Setting version number
         id: versionNumber
         env:
-          versionNumber: "${{steps.tag.outputs.content}}"
+          versionNumber: "${{steps.tag.outputs.VERSION}}"
         run: echo $versionNumber
       - name: Updating version number to $versionNumber
         uses: DamianReeves/write-file-action@v1.0
