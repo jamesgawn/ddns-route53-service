@@ -1,7 +1,7 @@
 {
   "name": "ddns-route53-service",
   "version": "1.0.0",
-  "description": "",
+  "description": "A simple dockerised node service to handle route53 updates from a DDNS client.",
   "main": "app.ts",
   "scripts": {
     "build": "rimraf ./dist && tsc",
