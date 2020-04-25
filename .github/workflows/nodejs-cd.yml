@@ -34,8 +34,7 @@ jobs:
     needs: [docker-publish]
     steps:
       - name: Send SSM Upgrade Command
-        run:
-          command: aws ssm send-command --document-name train-tracker-api-upgrade --targets Key=tag:Name,Values=train-tracker-api
+        run: aws ssm send-command --document-name ddns-service-upgrade --targets Key=tag:Name,Values=ddns-service
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
