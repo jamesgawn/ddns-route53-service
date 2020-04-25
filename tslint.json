@@ -3,6 +3,8 @@
     "extends": [
         "tslint:recommended"
     ],
-    "rules": {},
+    "rules": {
+        "semicolon": true
+    },
     "rulesDirectory": []
 }
