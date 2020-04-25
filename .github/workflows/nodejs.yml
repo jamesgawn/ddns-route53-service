@@ -101,7 +101,7 @@ jobs:
         uses: DamianReeves/write-file-action@v1.0
         with:
           path: ./VERSION
-          contents: "${{env.versionNumber}}"
+          contents: $versionNumber
           write-mode: overwrite
       - name: Checking Version Number
         run: echo $versionNumber
