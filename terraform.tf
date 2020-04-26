@@ -147,6 +147,8 @@ resource "aws_ssm_document" "deploy-update" {
     inputs:
       runCommand:
       - export AWS_DEFAULT_REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | grep region | cut -d\" -f4)
+      - export SERVICE_USER=$(aws ssm get-parameters --names /${var.service-name}/prod/user --with-decryption --output text | cut -f6)
+      - export SERVICE_PASS=$(aws ssm get-parameters --names /${var.service-name}/prod/pass --with-decryption --output text | cut -f6)
       - sudo docker stop ${var.service-name}
       - sudo docker rm ${var.service-name}
       - sudo docker pull ${var.service-docker-image}
