@@ -45,4 +45,14 @@ describe('apputils', () => {
             expect(version).toBe("0.2.0");
         });
     });
+    describe('normaliseAuthorisation', () => {
+        it('should return username and password converted from base64 auth header format', () => {
+            const authHeaderExample = Buffer.from("bingobob:superpass").toString('base64');
+            const credentials = AppUtils.normaliseAuthorisation(authHeaderExample);
+            expect(credentials).toStrictEqual({
+                username: "bingobob",
+                password: "superpass"
+            });
+        });
+    });
 });

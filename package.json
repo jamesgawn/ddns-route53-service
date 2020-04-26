@@ -1,5 +1,5 @@
 {
-  "name": "ddns-route53-service",
+  "name": "ddns-service",
   "version": "1.0.0",
   "description": "A simple dockerised node service to handle route53 updates from a DDNS client",
   "main": "app.ts",

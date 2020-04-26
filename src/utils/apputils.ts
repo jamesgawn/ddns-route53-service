@@ -1,5 +1,4 @@
 import * as fs from "fs";
-
 export class AppUtils {
     static normalisePort(defaultPort: number) {
         const envPort = process.env.port;
@@ -25,5 +24,14 @@ export class AppUtils {
             }
         }
         return defaultVersion;
+    }
+    static normaliseAuthorisation(authorisationHeader: string) {
+        const buffer = Buffer.from(authorisationHeader, 'base64');
+        const text = buffer.toString('ascii');
+        const splitText = text.split(':');
+        return {
+            username: splitText[0],
+            password: splitText[1]
+        };
     }
 }
