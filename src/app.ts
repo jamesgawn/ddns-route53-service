@@ -9,7 +9,7 @@ const port = AppUtils.normalisePort(3000);
 const version = AppUtils.normaliseVersion("0.0.0");
 
 const logger = Logger.createLogger({
-    name: "ddns-route53-service",
+    name: "ddns-service",
     version
 });
 

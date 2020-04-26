@@ -22,14 +22,9 @@ variable "service-name" {
   default = "ddns-service"
 }
 
-variable "service-docker-name" {
-  type = string
-  default = "ddns-route53-service"
-}
-
 variable "service-docker-image" {
   type = string
-  default = "jamesgawn/ddns-route53-service"
+  default = "jamesgawn/ddns-service"
 }
 
 provider "aws" {

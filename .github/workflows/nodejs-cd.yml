@@ -23,7 +23,7 @@ jobs:
       - name: Publish to Registry
         uses: elgohr/Publish-Docker-Github-Action@2.14
         with:
-          name: jamesgawn/ddns-route53-service
+          name: jamesgawn/ddns-service
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
           tags: "latest,${{ env.versionNumber }}"
