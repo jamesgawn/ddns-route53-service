@@ -4,6 +4,7 @@ import KoaJson from 'koa-json';
 import KoaRouter from 'koa-router';
 import KoaBodyParser from 'koa-bodyparser';
 import { AppUtils } from "./utils/AppUtils";
+import {EnvVarUtil} from "./utils/EnvVarUtil";
 
 const port = AppUtils.normalisePort(3000);
 const version = AppUtils.normaliseVersion("0.0.0");
@@ -12,6 +13,10 @@ const logger = Logger.createLogger({
     name: "ddns-service",
     version
 });
+
+const envVarUtil = new EnvVarUtil(logger);
+envVarUtil.get('SERVICE_USER');
+envVarUtil.get('SERVICE_PASS');
 
 const router = new KoaRouter();
 
