@@ -1,4 +1,4 @@
-import { AppUtils } from "./apputils";
+import { AppUtils } from "./AppUtils";
 import * as fs from 'fs';
 
 jest.mock('fs');

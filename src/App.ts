@@ -3,7 +3,7 @@ import Koa from 'koa';
 import KoaJson from 'koa-json';
 import KoaRouter from 'koa-router';
 import KoaBodyParser from 'koa-bodyparser';
-import { AppUtils } from "./utils/apputils";
+import { AppUtils } from "./utils/AppUtils";
 
 const port = AppUtils.normalisePort(3000);
 const version = AppUtils.normaliseVersion("0.0.0");

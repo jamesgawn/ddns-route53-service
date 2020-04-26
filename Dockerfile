@@ -17,4 +17,4 @@ COPY --from=build /usr/src/app/dist dist
 COPY VERSION .
 
 EXPOSE 3000
-CMD [ "node", "dist/app.js"]
+CMD [ "node", "dist/App.js"]
