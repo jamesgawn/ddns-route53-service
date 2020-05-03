@@ -14,17 +14,17 @@ describe('apputils', () => {
             expect(port).toBe(3000);
         });
         it('should return default if no port specified in evn var is not a number', () => {
-            process.env.port = "asdfasf";
+            process.env.PORT = "asdfasf";
             const port = AppUtils.normalisePort(4500);
             expect(port).toBe(4500);
         });
         it('should return default if no port specified in evn var is 0', () => {
-            process.env.port = "0";
+            process.env.PORT = "0";
             const port = AppUtils.normalisePort(3000);
             expect(port).toBe(3000);
         });
         it('should return env var specified port if it is a number', () => {
-            process.env.port = "4000";
+            process.env.PORT = "4000";
             const port = AppUtils.normalisePort(3000);
             expect(port).toBe(4000);
         });
