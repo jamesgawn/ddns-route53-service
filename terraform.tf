@@ -165,13 +165,13 @@ resource "aws_ssm_document" "deploy-update" {
     inputs:
       runCommand:
       - export AWS_DEFAULT_REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | grep region | cut -d\" -f4)
-      - export SERVICE_USER=$(aws ssm get-parameters --names /${var.service-name}/prod/user --with-decryption --output text | cut -f6)
-      - export SERVICE_PASS=$(aws ssm get-parameters --names /${var.service-name}/prod/pass --with-decryption --output text | cut -f6)
-      - export MAINTAINER_EMAIL=${var.maintainer-email}
+      - echo SERVICE_USER=$(aws ssm get-parameters --names /${var.service-name}/prod/user --with-decryption --output text | cut -f6) > /usr/etc/ddns-service/env.list
+      - echo SERVICE_PASS=$(aws ssm get-parameters --names /${var.service-name}/prod/pass --with-decryption --output text | cut -f6) >> /usr/etc/ddns-service/env.list
+      - echo MAINTAINER_EMAIL=${var.maintainer-email} >> /usr/etc/ddns-service/env.list
       - sudo docker stop ${var.service-name}
       - sudo docker rm ${var.service-name}
       - sudo docker pull ${var.service-docker-image}
-      - sudo docker run -p 80:80 -p 433:443 -v /usr/etc/ddns-service/greenlock.d:/usr/src/app/greenlock.d -e SERVICE_USER -e SERVICE_PASS -e MAINTAINER_EMAIL --log-driver=awslogs --log-opt=awslogs-group=${var.service-name} --log-opt=awslogs-create-group=true --name ${var.service-name} --restart always -detach ${var.service-docker-image}
+      - sudo docker run -p 80:80 -p 443:443 -v /usr/etc/ddns-service/greenlock.d:/usr/src/app/greenlock.d --env-file=/usr/etc/ddns-service/env.list --log-driver=awslogs --log-opt=awslogs-group=${var.service-name} --log-opt=awslogs-create-group=true --name ${var.service-name} --restart always -detach ${var.service-docker-image}
 
 DOC
 
