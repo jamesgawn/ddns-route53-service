@@ -64,12 +64,16 @@
     "resolveJsonModule": true,                /* Include modules imported with '.json' extension */
     "forceConsistentCasingInFileNames": true  /* Disallow inconsistently-cased references to the same file. */
   },
+  "typeRoots" : [
+    "./node_modules/@types",
+    "./types"
+  ],
   "include": [
-    "src/**/*",
-    "types/*"
+    "types/**/*.d.ts",
+    "src/**/*"
   ],
   "exclude": [
     "node_modules",
-    "**/*.spec.ts"
+    "src/**/*.spec.ts"
   ]
 }
