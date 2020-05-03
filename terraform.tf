@@ -171,7 +171,7 @@ resource "aws_ssm_document" "deploy-update" {
       - sudo docker stop ${var.service-name}
       - sudo docker rm ${var.service-name}
       - sudo docker pull ${var.service-docker-image}
-      - sudo docker run -p 80:80 -p 433:443 -v /usr/etc/ddns-service/greenlock.d:/usr/src/app/greenlock.d --log-driver=awslogs --log-opt=awslogs-group=${var.service-name} --log-opt=awslogs-create-group=true --name ${var.service-name} --restart always -detach ${var.service-docker-image}
+      - sudo docker run -p 80:80 -p 433:443 -v /usr/etc/ddns-service/greenlock.d:/usr/src/app/greenlock.d -e SERVICE_USER -e SERVICE_PASS -e MAINTAINER_EMAIL --log-driver=awslogs --log-opt=awslogs-group=${var.service-name} --log-opt=awslogs-create-group=true --name ${var.service-name} --restart always -detach ${var.service-docker-image}
 
 DOC
 
