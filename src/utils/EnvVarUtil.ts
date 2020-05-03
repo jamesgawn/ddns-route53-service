@@ -38,6 +38,7 @@ export class EnvVarUtil {
     getWithDefault(name: string, defaultValue: string) {
         const value = this.get(name, false);
         if (value === null) {
+            this.log.info("Providing default value for " + name);
             return defaultValue;
         }
         else
