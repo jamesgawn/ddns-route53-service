@@ -10,3 +10,5 @@ dist
 terraform.tf
 terraform.tfvars
 cloudinit.cfg
+greenlock.d
+.greenlockrc

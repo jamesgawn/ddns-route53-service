@@ -16,5 +16,7 @@ RUN npm install --production
 COPY --from=build /usr/src/app/dist dist
 COPY VERSION .
 
+EXPOSE 80
+EXPOSE 443
 EXPOSE 3000
 CMD [ "node", "dist/App.js"]

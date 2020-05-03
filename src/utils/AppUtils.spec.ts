@@ -4,7 +4,7 @@ import * as fs from 'fs';
 jest.mock('fs');
 const mockedFs: jest.Mocked<typeof fs> = fs as any;
 
-describe('apputils', () => {
+describe('AppUtils', () => {
     beforeEach(() => {
         delete process.env.PORT;
     });

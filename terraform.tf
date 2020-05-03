@@ -13,13 +13,21 @@ variable "iam-username" {
   default = "ddns-service-deployer"
 }
 
-variable "domain" {
+variable "parent-domain" {
+  type = string
+}
+
+variable "service-domain" {
   type = string
 }
 
 variable "service-name" {
   type = string
   default = "ddns-service"
+}
+
+variable "maintainer-email" {
+  type = string
 }
 
 variable "service-docker-image" {
@@ -64,9 +72,10 @@ data "aws_ami" "amazon-linux-2" {
 data "template_file" "server-cloud-init" {
   template = file("${path.module}/cloudinit.cfg")
   vars = {
-    DOMAIN = var.domain,
+    SERVICE_DOMAIN = var.service-domain,
     SERVICE_NAME = var.service-name,
     DOCKER_IMAGE = var.service-docker-image
+    MAINTAINER_EMAIL= var.maintainer-email
   }
 }
 
@@ -89,6 +98,20 @@ resource "aws_security_group" "server_security_group" {
   ingress {
     from_port        = 80
     to_port          = 80
+    protocol         = "tcp"
+    ipv6_cidr_blocks = ["::/0"]
+  }
+
+  ingress {
+    from_port   = 443
+    to_port     = 443
+    protocol    = "tcp"
+    cidr_blocks = ["0.0.0.0/0"]
+  }
+
+  ingress {
+    from_port        = 443
+    to_port          = 443
     protocol         = "tcp"
     ipv6_cidr_blocks = ["::/0"]
   }
@@ -144,10 +167,11 @@ resource "aws_ssm_document" "deploy-update" {
       - export AWS_DEFAULT_REGION=$(curl -s http://169.254.169.254/latest/dynamic/instance-identity/document | grep region | cut -d\" -f4)
       - export SERVICE_USER=$(aws ssm get-parameters --names /${var.service-name}/prod/user --with-decryption --output text | cut -f6)
       - export SERVICE_PASS=$(aws ssm get-parameters --names /${var.service-name}/prod/pass --with-decryption --output text | cut -f6)
+      - export MAINTAINER_EMAIL=${var.maintainer-email}
       - sudo docker stop ${var.service-name}
       - sudo docker rm ${var.service-name}
       - sudo docker pull ${var.service-docker-image}
-      - sudo docker run -p 80:3000 --log-driver=awslogs --log-opt=awslogs-group=${var.service-name} --log-opt=awslogs-create-group=true --name ${var.service-name} --restart always -detach ${var.service-docker-image}
+      - sudo docker run -p 80:3000 -v /usr/etc/ddns-service/greenlock.d:/usr/src/app/greenlock.d --log-driver=awslogs --log-opt=awslogs-group=${var.service-name} --log-opt=awslogs-create-group=true --name ${var.service-name} --restart always -detach ${var.service-docker-image}
 
 DOC
 
@@ -199,11 +223,11 @@ resource "aws_iam_user_policy_attachment" "deploy-access-attachment" {
 }
 
 data "aws_route53_zone" "domain-root" {
-  name = var.domain
+  name = var.parent-domain
 }
 
 resource "aws_route53_record" "api-dns-a-record" {
-  name    = "ddns.${var.domain}"
+  name    = var.service-domain
   type    = "A"
   zone_id = data.aws_route53_zone.domain-root.zone_id
   ttl     = "600"
@@ -211,7 +235,7 @@ resource "aws_route53_record" "api-dns-a-record" {
 }
 
 resource "aws_route53_record" "api-dns-aaaa-record" {
-  name    = "ddns.${var.domain}"
+  name    = var.service-domain
   type    = "AAAA"
   zone_id = data.aws_route53_zone.domain-root.zone_id
   ttl     = "600"
