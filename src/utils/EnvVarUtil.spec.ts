@@ -3,7 +3,11 @@ import Logger from 'bunyan';
 
 describe('EnvVarUtil', () => {
     let envVarHelper: EnvVarUtil;
-
+    const varName: string = 'BLAH_TEST';
+    const varValue: string = 'pies';
+    afterEach(() => {
+        delete process.env[varName];
+    });
     beforeEach(() => {
         const logger = Logger.createLogger({
             name: "test"
@@ -12,11 +16,6 @@ describe('EnvVarUtil', () => {
     });
 
     describe('get', () => {
-        const varName: string = 'BLAH_TEST';
-        const varValue: string = 'pies';
-        afterEach(() => {
-            delete process.env[varName];
-        });
         it('should return config from cache when available', () => {
             process.env[varName] = varValue;
             const result = envVarHelper.get(varName);
@@ -53,6 +52,20 @@ describe('EnvVarUtil', () => {
         it('should return null when fail on error is fales and env var is not available', () => {
             const result = envVarHelper.get(varName, false);
             expect(result).toBe(null);
+        });
+    });
+
+    describe('getWithDefault', () => {
+        it ('should return the default value if not available in envVar', () => {
+            const defaultValue = "defaultValue";
+            const value = envVarHelper.getWithDefault(varName, defaultValue);
+            expect(value).toBe(defaultValue);
+        });
+        it ('should return the env var value if available in envVar', () => {
+            process.env[varName] = varValue;
+            const defaultValue = "defaultValue";
+            const value = envVarHelper.getWithDefault(varName, defaultValue);
+            expect(value).toBe(varValue);
         });
     });
 });

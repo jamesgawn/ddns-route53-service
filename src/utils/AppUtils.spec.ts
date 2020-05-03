@@ -5,6 +5,9 @@ jest.mock('fs');
 const mockedFs: jest.Mocked<typeof fs> = fs as any;
 
 describe('apputils', () => {
+    beforeEach(() => {
+        delete process.env.PORT;
+    });
     describe('normaliseport', () => {
         it('should return default if no port specified', () => {
             const port = AppUtils.normalisePort(3000);

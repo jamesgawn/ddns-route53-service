@@ -1,7 +1,7 @@
 import * as fs from "fs";
 export class AppUtils {
     static normalisePort(defaultPort: number) {
-        const envPort = process.env.port;
+        const envPort = process.env.PORT;
         if (envPort === undefined)
         {
             return defaultPort;
