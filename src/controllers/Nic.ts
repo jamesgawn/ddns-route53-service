@@ -25,8 +25,12 @@ export class Nic {
         }
     }
 
-    update(req: express.Request, res: express.Response, next: express.NextFunction) {
+    update = (req: express.Request, res: express.Response, next: express.NextFunction) => {
         if (req.headers.authorization) {
+            res.status(501);
+            res.json({
+                message: "Endpoint Incomplete"
+            });
             next();
         }
         else

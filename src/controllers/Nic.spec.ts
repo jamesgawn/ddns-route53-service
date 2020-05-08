@@ -51,6 +51,7 @@ describe("Nic", () => {
         let next: NextFunction;
 
         const mockResStatus = jest.fn();
+        const mockJson = jest.fn();
         const mockNext = jest.fn();
         beforeEach(() => {
             nic = new Nic(logger);
@@ -60,13 +61,16 @@ describe("Nic", () => {
                 }
             } as unknown as Request;
             res = {
-                status: mockResStatus
+                status: mockResStatus,
+                json: mockJson
             } as unknown as Response;
             next = jest.fn();
         });
         it('should update IP with valid credentials', () => {
             req.headers.authorization = "something";
             nic.update(req, res, mockNext);
+            expect(mockResStatus).toBeCalledWith(501);
+            expect(mockJson).toBeCalledWith({message: "Endpoint Incomplete"});
         });
         it('should not update IP with missing authorisation header', () => {
             nic.update(req, res, mockNext);
