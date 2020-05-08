@@ -57,7 +57,11 @@ describe("Nic", () => {
             nic = new Nic(logger);
             req = {
                 headers: {
-                    authorisation: undefined
+                    authorization: "Basic " + Buffer.from("testUser:testPass").toString('base64')
+                },
+                query: {
+                    myip: "192.13.14.1",
+                    hostname: "itsamiricle.com"
                 }
             } as unknown as Request;
             res = {
@@ -67,13 +71,33 @@ describe("Nic", () => {
             next = jest.fn();
         });
         it('should update IP with valid credentials', () => {
-            req.headers.authorization = "something";
             nic.update(req, res);
             verifyErrResponse(mockResStatus, mockJson, 501, 'Endpoint Incomplete');
         });
         it('should not update IP with missing authorisation header', () => {
+            delete req.headers.authorization;
             nic.update(req, res);
-            verifyErrResponse(mockResStatus, mockJson, 401, 'Update failed due to missing authorisation header.');
+            verifyErrResponse(mockResStatus, mockJson, 401, 'Update failed due to invalid authorisation header.');
+        });
+        it('should not update IP with incorrect credentials in authorisation header', () => {
+            req.headers.authorization = "blah blah blah";
+            nic.update(req, res);
+            verifyErrResponse(mockResStatus, mockJson, 401, 'Update failed due to invalid authorisation header.');
+        });
+        it('should not update IP with missing hostname paramater', () => {
+            delete req.query.hostname;
+            nic.update(req, res);
+            verifyErrResponse(mockResStatus, mockJson, 400, 'Failed update due to hostname missing from query parameters.');
+        });
+        it('should not update IP with missing IP parameter', () => {
+            delete req.query.myip;
+            nic.update(req, res);
+            verifyErrResponse(mockResStatus, mockJson, 400, 'Failed update due to IP address missing from query parameters.');
+        });
+        it('should not update IP with invalid IP parameter', () => {
+            req.query.myip = "plaster";
+            nic.update(req, res);
+            verifyErrResponse(mockResStatus, mockJson, 400, 'Failed update due to IP address missing from query parameters.');
         });
     });
 });

@@ -2,6 +2,7 @@ import * as express from "express";
 import { EnvVarUtil } from "../utils/EnvVarUtil";
 import { sendError } from "../utils/ErrorUtil";
 import Logger from 'bunyan';
+import {AppUtils} from "../utils/AppUtils";
 
 export class Nic {
     logger: Logger;
@@ -27,13 +28,28 @@ export class Nic {
     }
 
     update = (req: express.Request, res: express.Response) => {
-        if (req.headers.authorization) {
-            sendError(res, 501, "Endpoint Incomplete");
+        if (!req.headers.authorization || !this.validateAuthentication(req.headers.authorization)) {
+            this.logger.warn('Failed update due to invalid authorisation header.');
+            sendError(res, 401, "Update failed due to invalid authorisation header.");
+        } else if (!req.query.myip || !Nic.validateIpAddress(req.query.myip as string)) {
+            this.logger.warn('Failed update due to IP address missing from query parameters.');
+            sendError(res, 400, "Failed update due to IP address missing from query parameters.");
+        } else if (!req.query.hostname) {
+            this.logger.warn('Failed update due to hostname missing from query parameters.');
+            sendError(res, 400, "Failed update due to hostname missing from query parameters.");
         }
         else
         {
-            this.logger.warn('Failed update due to no authorisation header.');
-            sendError(res, 401, "Update failed due to missing authorisation header.");
+            sendError(res, 501, "Endpoint Incomplete");
         }
+    }
+
+    private static validateIpAddress(ip: string) {
+        return (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip));
+    }
+
+    private validateAuthentication(authorisationHeader: string) {
+        const credentials = AppUtils.normaliseAuthorisation(authorisationHeader);
+        return credentials.username === this.user && credentials.password === this.pass;
     }
 }

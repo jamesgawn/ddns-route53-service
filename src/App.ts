@@ -15,6 +15,7 @@ const logger = Logger.createLogger({
 });
 
 const app: Application = express();
+app.disable('x-powered-by');
 app.use((request, response, next) => {
     logger.info({msg: 'Got a request from %s for %s', ip: request.ip, path: request.path});
     next();

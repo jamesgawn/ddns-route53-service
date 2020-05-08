@@ -26,7 +26,8 @@ export class AppUtils {
         return defaultVersion;
     }
     static normaliseAuthorisation(authorisationHeader: string) {
-        const buffer = Buffer.from(authorisationHeader, 'base64');
+        const encodedCredentials = authorisationHeader.substr(6);
+        const buffer = Buffer.from(encodedCredentials, 'base64');
         const text = buffer.toString('ascii');
         const splitText = text.split(':');
         return {
