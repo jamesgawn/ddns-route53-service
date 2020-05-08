@@ -9,7 +9,8 @@ describe("Home", () => {
             } as unknown as Response;
             index({} as any, resMock);
             expect(resMock.json).toBeCalledWith({
-                message: "Dynamic DNS Service"
+                message: "Dynamic DNS Service",
+                version: "0.0.0"
             });
         });
     });

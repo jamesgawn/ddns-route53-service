@@ -49,10 +49,6 @@ terraform {
   }
 }
 
-data "aws_iam_role" "ec2instancerole" {
-  name = "EC2SystemManagerRole"
-}
-
 data "aws_ami" "amazon-linux-2" {
   most_recent = true
 
@@ -135,10 +131,75 @@ data "aws_subnet" "subnet" {
   id = "subnet-d19878aa"
 }
 
+resource "aws_iam_policy" "domain_update_policy" {
+  name        = "ddns-service-domain-update-policy"
+  description = "A test policy"
+  policy      = <<EOF
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Effect": "Allow",
+            "Action": "route53:ChangeResourceRecordSets",
+            "Resource": "arn:aws:route53:::hostedzone/ID:${data.aws_route53_zone.domain-root.id}"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "route53:ListHostedZones",
+            "Resource": "*"
+        }
+    ]
+}
+EOF
+}
+
+resource "aws_iam_role" "service_role" {
+  name = "ddns-service-role"
+  assume_role_policy = <<EOF
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Action": "sts:AssumeRole",
+      "Principal": {
+        "Service": [
+          "sns.amazonaws.com",
+          "ec.amazonaws.com",
+          "ssm.amazonaws.com",
+          "ec2.amazonaws.com"
+        ]
+      },
+      "Effect": "Allow",
+      "Sid": ""
+    }
+  ]
+}
+EOF
+}
+
+data "aws_iam_policy" "ssm_policy" {
+  arn = "arn:aws:iam::aws:policy/service-role/AmazonEC2RoleforSSM"
+}
+
+resource "aws_iam_role_policy_attachment" "service_role_domain_update_attachment" {
+  policy_arn = aws_iam_policy.domain_update_policy.arn
+  role = aws_iam_role.service_role.name
+}
+
+resource "aws_iam_role_policy_attachment" "service_role_ssm_attachment" {
+  policy_arn = data.aws_iam_policy.ssm_policy.arn
+  role = aws_iam_role.service_role.name
+}
+
+resource "aws_iam_instance_profile" "ddns_service_profile" {
+  name = "ddns-service-profile"
+  role = aws_iam_role.service_role.name
+}
+
 resource "aws_instance" "server" {
   ami                  = data.aws_ami.amazon-linux-2.id
   instance_type        = "t3.nano"
-  iam_instance_profile = data.aws_iam_role.ec2instancerole.name
+  iam_instance_profile = aws_iam_instance_profile.ddns_service_profile.name
 
   user_data = data.template_file.server-cloud-init.rendered
 

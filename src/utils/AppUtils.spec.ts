@@ -51,7 +51,7 @@ describe('AppUtils', () => {
     describe('normaliseAuthorisation', () => {
         it('should return username and password converted from base64 auth header format', () => {
             const authHeaderExample = Buffer.from("bingobob:superpass").toString('base64');
-            const credentials = AppUtils.normaliseAuthorisation(authHeaderExample);
+            const credentials = AppUtils.normaliseAuthorisation(`Basic ${authHeaderExample}`);
             expect(credentials).toStrictEqual({
                 username: "bingobob",
                 password: "superpass"
