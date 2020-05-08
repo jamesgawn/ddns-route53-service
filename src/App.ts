@@ -41,8 +41,6 @@ if (env === "PROD") {
     } else {
         logger.fatal(`No maintainer e-mail, unable to start.`);
     }
-
-
 }
 else
 {
