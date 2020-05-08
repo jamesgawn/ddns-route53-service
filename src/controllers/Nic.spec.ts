@@ -1,6 +1,7 @@
 import { Nic } from "./Nic";
 import Logger from "bunyan";
 import {NextFunction, Request, Response} from "express";
+import {verifyErrResponse} from "../test/helpers";
 
 describe("Nic", () => {
     let nic: Nic;
@@ -69,13 +70,11 @@ describe("Nic", () => {
         it('should update IP with valid credentials', () => {
             req.headers.authorization = "something";
             nic.update(req, res, mockNext);
-            expect(mockResStatus).toBeCalledWith(501);
-            expect(mockJson).toBeCalledWith({message: "Endpoint Incomplete"});
+            verifyErrResponse(mockResStatus, mockJson, 501, 'Endpoint Incomplete');
         });
         it('should not update IP with missing authorisation header', () => {
             nic.update(req, res, mockNext);
-            expect(mockResStatus).toBeCalledWith(401);
-            expect(mockNext).toBeCalledWith(new Error('Update failed due to missing authorisation header.'));
+            verifyErrResponse(mockResStatus, mockJson, 401, 'Update failed due to missing authorisation header.');
         });
     });
 });

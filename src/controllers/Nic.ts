@@ -1,5 +1,6 @@
 import * as express from "express";
 import { EnvVarUtil } from "../utils/EnvVarUtil";
+import { sendError } from "../utils/ErrorUtil";
 import Logger from 'bunyan';
 
 export class Nic {
@@ -25,19 +26,14 @@ export class Nic {
         }
     }
 
-    update = (req: express.Request, res: express.Response, next: express.NextFunction) => {
+    update = (req: express.Request, res: express.Response) => {
         if (req.headers.authorization) {
-            res.status(501);
-            res.json({
-                message: "Endpoint Incomplete"
-            });
-            next();
+            sendError(res, 501, "Endpoint Incomplete");
         }
         else
         {
             this.logger.warn('Failed update due to no authorisation header.');
-            res.status(401);
-            next(new Error('Update failed due to missing authorisation header.'));
+            sendError(res, 401, "Update failed due to missing authorisation header.");
         }
     }
 }
