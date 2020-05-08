@@ -45,16 +45,12 @@ export class Nic {
             const ip = req.query.myip.toString();
             this.logger.info('Passed validation checks, moving on to domain update');
             try {
-                try {
-                    await updateDomainARecord(this.logger, domain, ip);
-                    res.status(200);
-                    res.json({
-                        status: 200,
-                        message: `Updated ${domain} A record to ${ip}`
-                    });
-                } catch (err) {
-                    sendError(res, 500, err.message);
-                }
+                await updateDomainARecord(this.logger, domain, ip);
+                res.status(200);
+                res.json({
+                    status: 200,
+                    message: `Updated ${domain} A record to ${ip}`
+                });
             } catch (err) {
                 sendError(res, 500, err.message);
             }
