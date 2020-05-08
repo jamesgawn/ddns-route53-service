@@ -3,6 +3,7 @@ import { EnvVarUtil } from "../utils/EnvVarUtil";
 import { sendError } from "../utils/ErrorUtil";
 import Logger from 'bunyan';
 import {AppUtils} from "../utils/AppUtils";
+import {updateDomainARecord} from "../services/Route53Updater";
 
 export class Nic {
     logger: Logger;
@@ -27,7 +28,7 @@ export class Nic {
         }
     }
 
-    update = (req: express.Request, res: express.Response) => {
+    update = async (req: express.Request, res: express.Response) => {
         if (!req.headers.authorization || !this.validateAuthentication(req.headers.authorization)) {
             this.logger.warn('Failed update due to invalid authorisation header.');
             sendError(res, 401, "Update failed due to invalid authorisation header.");
@@ -40,7 +41,23 @@ export class Nic {
         }
         else
         {
-            sendError(res, 501, "Endpoint Incomplete");
+            const domain = req.query.hostname.toString();
+            const ip = req.query.myip.toString();
+            this.logger.info('Passed validation checks, moving on to domain update');
+            try {
+                try {
+                    await updateDomainARecord(this.logger, domain, ip);
+                    res.status(200);
+                    res.json({
+                        status: 200,
+                        message: `Updated ${domain} A record to ${ip}`
+                    });
+                } catch (err) {
+                    sendError(res, 500, err.message);
+                }
+            } catch (err) {
+                sendError(res, 500, err.message);
+            }
         }
     }
 

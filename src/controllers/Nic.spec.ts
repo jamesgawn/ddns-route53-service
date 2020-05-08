@@ -2,6 +2,10 @@ import { Nic } from "./Nic";
 import Logger from "bunyan";
 import {NextFunction, Request, Response} from "express";
 import {verifyErrResponse} from "../test/helpers";
+import * as Route53Updater from "../services/Route53Updater";
+
+jest.mock("../services/Route53Updater");
+const mockedRoute53Updater: jest.Mocked<typeof Route53Updater> = Route53Updater as any;
 
 describe("Nic", () => {
     let nic: Nic;
@@ -70,33 +74,43 @@ describe("Nic", () => {
             } as unknown as Response;
             next = jest.fn();
         });
-        it('should update IP with valid credentials', () => {
-            nic.update(req, res);
-            verifyErrResponse(mockResStatus, mockJson, 501, 'Endpoint Incomplete');
+        it('should update IP with valid credentials', async () => {
+            mockedRoute53Updater.updateDomainARecord.mockResolvedValue();
+            await nic.update(req, res);
+            expect(mockResStatus).toBeCalledWith(200);
+            expect(mockJson).toBeCalledWith({
+                status: 200,
+                message: `Updated itsamiricle.com A record to 192.13.14.1`
+            });
         });
-        it('should not update IP with missing authorisation header', () => {
+        it('should report error when AWS Route 53 update fails', async () => {
+            mockedRoute53Updater.updateDomainARecord.mockRejectedValue(new Error("blah"));
+            await nic.update(req, res);
+            verifyErrResponse(mockResStatus, mockJson, 500, 'blah');
+        });
+        it('should not update IP with missing authorisation header', async () => {
             delete req.headers.authorization;
-            nic.update(req, res);
+            await nic.update(req, res);
             verifyErrResponse(mockResStatus, mockJson, 401, 'Update failed due to invalid authorisation header.');
         });
-        it('should not update IP with incorrect credentials in authorisation header', () => {
+        it('should not update IP with incorrect credentials in authorisation header', async () => {
             req.headers.authorization = "blah blah blah";
-            nic.update(req, res);
+            await nic.update(req, res);
             verifyErrResponse(mockResStatus, mockJson, 401, 'Update failed due to invalid authorisation header.');
         });
-        it('should not update IP with missing hostname paramater', () => {
+        it('should not update IP with missing hostname paramater', async () => {
             delete req.query.hostname;
-            nic.update(req, res);
+            await nic.update(req, res);
             verifyErrResponse(mockResStatus, mockJson, 400, 'Failed update due to hostname missing from query parameters.');
         });
-        it('should not update IP with missing IP parameter', () => {
+        it('should not update IP with missing IP parameter', async () => {
             delete req.query.myip;
             nic.update(req, res);
             verifyErrResponse(mockResStatus, mockJson, 400, 'Failed update due to IP address missing from query parameters.');
         });
-        it('should not update IP with invalid IP parameter', () => {
+        it('should not update IP with invalid IP parameter', async () => {
             req.query.myip = "plaster";
-            nic.update(req, res);
+            await nic.update(req, res);
             verifyErrResponse(mockResStatus, mockJson, 400, 'Failed update due to IP address missing from query parameters.');
         });
     });

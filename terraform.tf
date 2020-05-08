@@ -142,6 +142,11 @@ resource "aws_iam_policy" "domain_update_policy" {
             "Effect": "Allow",
             "Action": "route53:ChangeResourceRecordSets",
             "Resource": "arn:aws:route53:::hostedzone/ID:${data.aws_route53_zone.domain-root.id}"
+        },
+        {
+            "Effect": "Allow",
+            "Action": "route53:ListHostedZones",
+            "Resource": "*"
         }
     ]
 }
