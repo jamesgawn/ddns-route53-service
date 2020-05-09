@@ -27,7 +27,7 @@ app.get("/", Home.index);
 app.get('/nic/update', nic.update);
 
 const envVarUtil = new EnvVarUtil(logger);
-const env = envVarUtil.getWithDefault('ENV', "PROD");
+const env = envVarUtil.getWithDefault('ENV', "DEV");
 if (env === "PROD") {
     const maintainerEmail = envVarUtil.get('MAINTAINER_EMAIL');
     if (maintainerEmail) {
