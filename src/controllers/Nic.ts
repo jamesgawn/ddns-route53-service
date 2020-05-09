@@ -30,20 +30,20 @@ export class Nic {
 
     update = async (req: express.Request, res: express.Response) => {
         if (!req.headers.authorization || !this.validateAuthentication(req.headers.authorization)) {
-            this.logger.warn('Failed update due to invalid authorisation header.');
+            this.logger.error('Failed update due to invalid authorisation header.');
             sendError(res, 401, "Update failed due to invalid authorisation header.");
         } else if (!req.query.myip || !Nic.validateIpAddress(req.query.myip as string)) {
-            this.logger.warn('Failed update due to IP address missing from query parameters.');
+            this.logger.error('Failed update due to IP address missing from query parameters.');
             sendError(res, 400, "Failed update due to IP address missing from query parameters.");
         } else if (!req.query.hostname) {
-            this.logger.warn('Failed update due to hostname missing from query parameters.');
+            this.logger.error('Failed update due to hostname missing from query parameters.');
             sendError(res, 400, "Failed update due to hostname missing from query parameters.");
         }
         else
         {
             const domain = req.query.hostname.toString();
             const ip = req.query.myip.toString();
-            this.logger.info('Passed validation checks, moving on to domain update');
+            this.logger.trace('Passed validation checks, moving on to domain update');
             try {
                 await updateDomainARecord(this.logger, domain, ip);
                 res.status(200);
