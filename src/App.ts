@@ -1,5 +1,6 @@
 import Logger from 'bunyan';
 import express, { Application } from "express";
+import addRequestId from "express-request-id";
 import { AppUtils } from "./utils/AppUtils";
 import { EnvVarUtil } from "./utils/EnvVarUtil";
 import * as greenlock from 'greenlock-express';
@@ -16,6 +17,8 @@ const logger = Logger.createLogger({
 
 const app: Application = express();
 app.disable('x-powered-by');
+app.use(addRequestId());
+
 app.use((request, response, next) => {
     logger.info({msg: 'Got a request from %s for %s', ip: request.ip, path: request.path});
     next();
@@ -29,6 +32,7 @@ app.get('/nic/update', nic.update);
 const envVarUtil = new EnvVarUtil(logger);
 const env = envVarUtil.getWithDefault('ENV', "DEV");
 if (env === "PROD") {
+    logger.trace("Starting up in PROD mode");
     const maintainerEmail = envVarUtil.get('MAINTAINER_EMAIL');
     if (maintainerEmail) {
         greenlock.init({
@@ -45,6 +49,7 @@ if (env === "PROD") {
 }
 else
 {
+    logger.trace("Starting up in DEV mode");
     app.listen(port, () => {
         logger.info(`ddns route 53 server (v${version}) listening to http://localhost:${port}`);
     });
