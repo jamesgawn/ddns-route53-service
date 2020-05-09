@@ -229,6 +229,7 @@ resource "aws_ssm_document" "deploy-update" {
       - echo SERVICE_USER=$(aws ssm get-parameters --names /${var.service-name}/prod/user --with-decryption --output text | cut -f6) > /usr/etc/ddns-service/env.list
       - echo SERVICE_PASS=$(aws ssm get-parameters --names /${var.service-name}/prod/pass --with-decryption --output text | cut -f6) >> /usr/etc/ddns-service/env.list
       - echo MAINTAINER_EMAIL=${var.maintainer-email} >> /usr/etc/ddns-service/env.list
+      - echo ENV=PROD >> /usr/etc/ddns-service/env.list
       - sudo docker stop ${var.service-name}
       - sudo docker rm ${var.service-name}
       - sudo docker pull ${var.service-docker-image}
