@@ -1,9 +1,6 @@
 import Mock = jest.Mock;
 
-export const verifyErrResponse = (statusCodeMock: Mock, jsonMock: Mock, statusCode: number, message: string) => {
+export const verifyErrResponse = (statusCodeMock: Mock, sendMock: Mock, statusCode: number, message: string) => {
     expect(statusCodeMock).toBeCalledWith(statusCode);
-    expect(jsonMock).toBeCalledWith({
-        code: statusCode,
-        message
-    });
+    expect(sendMock).toBeCalledWith(message);
 };

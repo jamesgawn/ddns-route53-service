@@ -5,17 +5,14 @@ describe('ErrorUtil', () => {
     describe('sendError', () => {
         it('should respond with status code, and message', () => {
             const statusMock = jest.fn();
-            const jsonMock = jest.fn();
+            const sendMock = jest.fn();
             const res = {
                 status: statusMock,
-                json: jsonMock
+                send: sendMock
             } as unknown as express.Response;
             sendError(res, 999, "boo");
             expect(statusMock).toBeCalledWith(999);
-            expect(jsonMock).toBeCalledWith({
-                code: 999,
-                message: 'boo'
-            });
+            expect(sendMock).toBeCalledWith('boo');
         });
     });
 });
