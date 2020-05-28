@@ -31,13 +31,13 @@ export class Nic {
     update = async (req: express.Request, res: express.Response) => {
         if (!req.headers.authorization || !this.validateAuthentication(req.headers.authorization)) {
             this.logger.error('Failed update due to invalid authorisation header.');
-            sendError(res, 401, "Update failed due to invalid authorisation header.");
+            sendError(res, 401, "badauth");
         } else if (!req.query.myip || !Nic.validateIpAddress(req.query.myip as string)) {
             this.logger.error('Failed update due to IP address missing from query parameters.');
-            sendError(res, 400, "Failed update due to IP address missing from query parameters.");
+            sendError(res, 400, "nohost");
         } else if (!req.query.hostname) {
             this.logger.error('Failed update due to hostname missing from query parameters.');
-            sendError(res, 400, "Failed update due to hostname missing from query parameters.");
+            sendError(res, 400, "nohost");
         }
         else
         {
@@ -47,16 +47,12 @@ export class Nic {
             try {
                 await updateDomainARecord(this.logger, domain, ip);
                 res.status(200);
-                res.json({
-                    status: 200,
-                    message: `Updated ${domain} A record to ${ip}`
-                });
+                res.send(`good ${ip}`);
             } catch (err) {
-                sendError(res, 500, err.message);
+                sendError(res, 500, "911");
             }
         }
     }
-
     private static validateIpAddress(ip: string) {
         return (/^(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)\.(25[0-5]|2[0-4][0-9]|[01]?[0-9][0-9]?)$/.test(ip));
     }
