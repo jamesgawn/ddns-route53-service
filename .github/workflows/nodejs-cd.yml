@@ -51,15 +51,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Get the version
-        id: tag
-        run: echo ::set-env name=versionNumber::$(echo $GITHUB_REF | cut -d / -f 3 | cut -c 2-)
-      - name: Updating version number to ${{ env.versionNumber }}
-        uses: DamianReeves/write-file-action@v1.0
-        with:
-          path: ./VERSION
-          contents: ${{ env.versionNumber }}
-          write-mode: overwrite
       - name: Docker meta
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
@@ -67,6 +58,15 @@ jobs:
           images: ghcr.io/jamesgawn/ddns-service
           tag-semver: |
             {{version}}
+      - name: Get the version
+        id: tag
+        run: echo ::set-output name=tag::$(echo $GITHUB_REF | cut -d / -f 3 | cut -c 2-)
+      - name: Updating version number to ${{ env.versionNumber }}
+        uses: DamianReeves/write-file-action@v1.0
+        with:
+          path: ./VERSION
+          contents: ${{ steps.vars.outputs.tag }}
+          write-mode: overwrite
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v1
       - name: Set up Docker Buildx
