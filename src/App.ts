@@ -28,10 +28,6 @@ const nic = new Nic(logger);
 app.get("/", Home.index);
 app.get('/nic/update', nic.update);
 
-const envVarUtil = new EnvVarUtil(logger);
-const env = envVarUtil.getWithDefault('ENV', "DEV");
-
-logger.trace(`Starting up in ${env} env`);
 app.listen(port, () => {
     logger.info(`ddns route 53 server (v${version}) listening to http://localhost:${port}`);
 });

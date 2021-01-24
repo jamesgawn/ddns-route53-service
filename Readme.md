@@ -13,7 +13,6 @@ The service can be ran either via the Docker image or directly as a node service
 | SERVICE_USER | The username that would be used by any DDNS client attempting to use this service. | Yes | N/A | myUsername |
 | SERVICE_PASS | The username that would be used by any DDNS client attempting to use this service. | Yes | N/A | myPassword |
 | PORT | The port used to host the service when in development mode | No | 3000 | 3001 | 
-| ENV | This controls whether the service will attempt to start-up on ports 80 & 443, and attempt to obtain a certificate, or simply open up on whatever port specified for environment variable "PORT" | No | DEV | PROD or DEV |
 
 ### Production
 
