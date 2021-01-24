@@ -1,4 +1,4 @@
-name: Node.js CI
+name: CI
 on:
   push:
     branches: [ master ]
@@ -87,11 +87,10 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
         with:
-          token: ${{ secrets.GTOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           fetch-depth: '0'
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.19.0
         env:
-          GITHUB_TOKEN: ${{ secrets.GTOKEN }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
           WITH_V: true
-          DEFAULT_BUMP: "patch"
