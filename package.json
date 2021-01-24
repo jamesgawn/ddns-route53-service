@@ -46,7 +46,6 @@
     "aws-sdk": "^2.673.0",
     "bunyan": "^1.8.12",
     "express": "^4.17.1",
-    "express-request-id": "^1.4.1",
-    "greenlock-express": "^4.0.3"
+    "express-request-id": "^1.4.1"
   }
 }

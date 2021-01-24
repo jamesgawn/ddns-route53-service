@@ -24,9 +24,6 @@ If you have the app in production mode (ENV=PROD), then you also need to supply 
 | AWS_DEFAULT_REGION | The AWS region containing the Route 53 zone that this service will update. _See more details on [AWS guide](https://docs.aws.amazon.com/credref/latest/refdocs/environment-variables.html)_ | Yes | eu-west-2 |
 | AWS_ACCESS_KEY_ID | The AWS Access Key ID to perform Route 53 updates. _See more details on [AWS guide](https://docs.aws.amazon.com/credref/latest/refdocs/environment-variables.html)_ | Yes | 234gasfaq3 |
 | AWS_SECRET_ACCESS_KEY | The AWS Secret Access Key to perform Route 53 updates. _See more details on [AWS guide](https://docs.aws.amazon.com/credref/latest/refdocs/environment-variables.html)_ | Yes | asdf23t23 |
-| MAINTAINER_EMAIL | The e-mail address contact to be associated with any TLS certificates issued by LetsEncrypt | Yes | james@example.com |
-
-Additionally, if you are running in PROD mode you will need to supply a configuration file in the greenlock.d folder as per the instructions for the [greenlock-express](https://www.npmjs.com/package/greenlock-express) package.
 
 _Note: If you are running the service on an EC2 instance using the terraform provided by this project then the credentials are provided via an AWS instance role profile, and not required._
 
@@ -47,20 +44,15 @@ Run the docker command for production mode:
 docker run -p 3000:3000 --env-file=./env.list jamesgawn/ddns-service
 ```
 ### Production Mode
-`./greenlock.d/config.json`:
-```
-{ "sites": [{ "subject": "example.com", "altnames": [ "example.com" ] }] }
-```
 `./env.list`:
 ```
 SERVICE_USER=myUsername
 SERVICE_PASS=myPassword
-MAINTAINER_EMAIL=james@example.com
 AWS_ACCESS_KEY_ID=234gasfaq3
 AWS_SECRET_ACCESS_KEY=asdf23t23
 AWS_DEFAULT_REGION=eu-west-2
 ```
 Run the docker command for production mode:
 ```bash
-sudo docker run -p 80:80 -p 443:443 -v ./greenlock.d:/usr/src/app/greenlock.d --env-file=./env.list jamesgawn/ddns-service
+sudo docker run -p 80:80 -p 443:443 --env-file=./env.list jamesgawn/ddns-service
 ```
