@@ -46,7 +46,7 @@ jobs:
           AWS_DEFAULT_REGION: "eu-west-2"
 
   ghcr-publication:
-    name: Build & Publish Docker
+    name: Build & Publish (GHCR)
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -64,7 +64,7 @@ jobs:
         id: docker_meta
         uses: crazy-max/ghaction-docker-meta@v1
         with:
-          images: ghcr.io/jamesgawn/gawn-website
+          images: ghcr.io/jamesgawn/ddns-service
           tag-semver: |
             {{version}}
       - name: Set up QEMU
