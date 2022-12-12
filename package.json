@@ -45,7 +45,7 @@
   "dependencies": {
     "aws-sdk": "^2.673.0",
     "bunyan": "^1.8.12",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-request-id": "^1.4.1"
   }
 }
